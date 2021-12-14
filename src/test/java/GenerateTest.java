@@ -55,7 +55,8 @@ public class GenerateTest extends BaseTest {
 //        boxScoreReport drillIn validation;
         assertEquals("failed to find drill in occupied counts or unable to select drill in", boxScoreReport.summarizedOccupied(), boxScoreReport.clickOnSummarizedElement());
         assertEquals("Unable to locate drill in",boxScoreReport.innerText, boxScoreReport.locateDrillInOccupiedCount());
-        assertEquals("drill in does not match summarized number", innerText, numberOnly);
+        System.out.println("generate test file String = " + innerText + ":inner text" + numberOnly + ":numbers only");
+        assertEquals("drill in does not match summarized number", boxScoreReport.innerText, boxScoreReport.numberOnly);
 
         System.out.println("generation successful");
     }
