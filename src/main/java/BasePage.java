@@ -13,37 +13,34 @@ public class BasePage {
     private final WebDriver driver;
     public String innerText;
     public String numberOnly;
-    public int innerTextInt;
-    public int numberOnlyInt;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
     }
-    //over Ride Method
-    public WebElement waitForElementToAppear (By locator, Duration waitTimeInSeconds) {
+    public boolean waitForElementToAppear(By locator) {
         try {
-        WebElement BaseWebElement = new WebDriverWait(driver, waitTimeInSeconds).until(ExpectedConditions.visibilityOfElementLocated(locator));
-        return BaseWebElement;
+            new WebDriverWait(driver, wt.DEFAULT_WAIT).until(ExpectedConditions.visibilityOfElementLocated(locator));
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
 
     }
-    public WebElement waitForElementToAppear(By locator) {
+    //over Ride Method
+    public boolean waitForElementToAppear (By locator, Duration waitTimeInSeconds) {
         try {
-        WebElement BaseWebElement = new WebDriverWait(driver, wt.defaultWait).until(ExpectedConditions.visibilityOfElementLocated(locator));
-
-        return BaseWebElement;
+        new WebDriverWait(driver, waitTimeInSeconds).until(ExpectedConditions.visibilityOfElementLocated(locator));
+        return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
 
     }
     public boolean locateAndClickOnElement (By locator){
         try {
-        WebElement elementToBeClicked = new WebDriverWait(driver, wt.defaultWait).until(ExpectedConditions.visibilityOfElementLocated(locator));
+        WebElement elementToBeClicked = new WebDriverWait(driver, wt.DEFAULT_WAIT).until(ExpectedConditions.visibilityOfElementLocated(locator));
         elementToBeClicked.click();
             return true;
         } catch (Exception e) {
@@ -53,7 +50,7 @@ public class BasePage {
     }
     public boolean pickFirstItemInAList (By locator) {
         try {
-            waitForElementToAppear(locator);
+            new WebDriverWait(driver, wt.DEFAULT_WAIT).until(ExpectedConditions.visibilityOfElementLocated(locator));
             driver.findElements(locator).get(0).click();
             return true;
         } catch (Exception e) {
@@ -63,7 +60,7 @@ public class BasePage {
     }
     public boolean moveToAndSelectItemInDropDown (By locator, By locator2) {
         try {
-            WebElement locatedListItem = waitForElementToAppear(locator);
+            WebElement locatedListItem = new WebDriverWait(driver, wt.DEFAULT_WAIT).until(ExpectedConditions.visibilityOfElementLocated(locator));
             Actions moveToItem = new Actions(driver);
             moveToItem.moveToElement(locatedListItem).click().perform();
             locateAndClickOnElement(locator2);
@@ -73,38 +70,98 @@ public class BasePage {
             return false;
         }
     }
-
-    public String findSummarizedReportNumber (By locator){
-            WebElement checkOccupiedDrillInSummarized = waitForElementToAppear(locator);
-            innerText = checkOccupiedDrillInSummarized.getAttribute("innerHTML");
+    public boolean moveToAElement(By locator) {
+        try {
+            WebElement element = new WebDriverWait(driver, wt.DEFAULT_WAIT).until(ExpectedConditions.visibilityOfElementLocated(locator));
+            Actions a = new Actions(driver);
+            a.moveToElement(element).perform();
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean moveToItemInDropdownAndClickItem (By locator) {
+        try {
+            Actions a = new Actions(driver);
+            WebElement item = new WebDriverWait(driver, wt.DEFAULT_WAIT).until(ExpectedConditions.visibilityOfElementLocated(locator));
+            a.moveToElement(item).perform();
+            item.click();
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public String locateNumberAndStoreAsString(By locator){
+        try {
+            WebElement locatedElement = new WebDriverWait(driver, wt.DEFAULT_WAIT).until(ExpectedConditions.visibilityOfElementLocated(locator));
+            innerText = locatedElement.getAttribute("innerHTML");
             System.out.println("Summarized number is "+ innerText);
             return innerText;
+        }  catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-    public void clickOnSummarizedElement (By locator) {
-            WebElement clickOccupiedDrillInSummarized = waitForElementToAppear(locator);
+    public boolean doubleClickOnElement (By locator) {
+        try {
+            WebElement clickOccupiedDrillInSummarized = new WebDriverWait(driver, wt.DEFAULT_WAIT).until(ExpectedConditions.visibilityOfElementLocated(locator));
             Actions DrillA = new Actions(driver);
             DrillA.moveToElement(clickOccupiedDrillInSummarized).doubleClick().perform();
+            return true;
+        }  catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-    public String locateDrillInElement (By locator){
-            WebElement LoadedDrillInResult = waitForElementToAppear(locator);
-            String stringOfDrillIn = LoadedDrillInResult.getAttribute("innerHTML");
-            System.out.println(stringOfDrillIn);
-            numberOnly= stringOfDrillIn.replaceAll("[^0-9]", "");
-            System.out.println("Refactored Drill in number is "+numberOnly);
-            return numberOnly;
+    public boolean doubleClickOnElementIfInnerTextNotEqualZero(By locator) {
+        try {
+            if (!innerText.equals("0")) {
+                WebElement clickOccupiedDrillInSummarized = new WebDriverWait(driver, wt.DEFAULT_WAIT).until(ExpectedConditions.visibilityOfElementLocated(locator));
+                Actions DrillA = new Actions(driver);
+                DrillA.moveToElement(clickOccupiedDrillInSummarized).doubleClick().perform();
+            }
+            return true;
+        }  catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public String removeLettersFromString(By locator){
+        try {
+            if (!innerText.equals("0")) {
+                WebElement locatedString = new WebDriverWait(driver, wt.DEFAULT_WAIT).until(ExpectedConditions.visibilityOfElementLocated(locator));
+                String innerHTMLOfString = locatedString.getAttribute("innerHTML");
+                System.out.println(innerHTMLOfString);
+                numberOnly = innerHTMLOfString.replaceAll("[^0-9]", "");
+                System.out.println("Refactored Drill in number is " + numberOnly);
+                return numberOnly;
+            } else
+                return numberOnly = "0";
+        }  catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-//    public boolean checkIfDrillInMatchesSummarizedElement () {
-//            innerTextInt = Integer.parseInt(innerText);
-//            numberOnlyInt = Integer.parseInt(numberOnly);
-//            boolean drillInValidate = false;
-//
-//            if (innerTextInt == numberOnlyInt) {
-//                drillInValidate = true;
-//                System.out.println("If else found a match! Drill in matches summarized number");
-//            } else {
-//                System.out.println("Drill does not match summarized number");
-//            }
-//            return drillInValidate;
-//    }
+    public boolean navigateToPage (String url) {
+        try {
+            driver.navigate().to(url);
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean sendKeys (String keys, By locator) {
+        try {
+            WebElement autocompleteUsername = new WebDriverWait(driver, wt.DEFAULT_WAIT).until(ExpectedConditions.visibilityOfElementLocated(locator));
+            autocompleteUsername.sendKeys(keys);
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
