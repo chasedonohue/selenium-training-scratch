@@ -16,7 +16,7 @@ public class BaseTest {
         driver = builtWebDriver.getWebDriver();
 
         preformMyLogin = new PerformLogin(driver);
-        assertTrue("Login try catch failed", preformMyLogin.performLoginUser( "Entrata_2012", "Xento123", "https://avantic.stage.entratadev.com/"));
+        assertTrue("Login try catch failed", preformMyLogin.performLoginUser( "Entrata_2012", "Xento123", "https://avantic.trunk.entratadev.com/"));
 
     }
     @After
