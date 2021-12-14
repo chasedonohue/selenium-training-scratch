@@ -40,26 +40,14 @@ public class BoxScore extends BasePage {
     }
 
     //The try catch needs to remain here since the Base page is returning a string for this method
-    public boolean summarizedOccupied () {
-        try {
-            locateNumberAndStoreAsString(OCCUPIED_SUMMARIZED_NUMBER);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    public String summarizedOccupied () {
+            return locateNumberAndStoreAsString(OCCUPIED_SUMMARIZED_NUMBER);
     }
-    public boolean clickOnSummarizedElement () {
+    public String clickOnSummarizedElement () {
             return doubleClickOnElementIfInnerTextNotEqualZero(OCCUPIED_SUMMARIZED_NUMBER);
     }
     //The try catch needs to remain here since the Base page is returning a string for this method
-    public boolean locateDrillInOccupiedCount () {
-        try {
-            removeLettersFromString(SUMMARIZED_DRILL_IN_COUNT);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    public String locateDrillInOccupiedCount () {
+            return removeLettersFromString(SUMMARIZED_DRILL_IN_COUNT);
     }
 }

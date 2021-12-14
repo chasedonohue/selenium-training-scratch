@@ -53,9 +53,8 @@ public class GenerateTest extends BaseTest {
         //check generation time
         assertTrue("Generation failed in 600 secs",boxScoreReport.verifyGeneration());
 //        boxScoreReport drillIn validation;
-        assertTrue("failed to find drill in occupied counts", boxScoreReport.summarizedOccupied());
-        assertTrue("Could not click on summarized number",boxScoreReport.clickOnSummarizedElement());
-        assertTrue("drill in number not found", boxScoreReport.locateDrillInOccupiedCount());
+        assertEquals("failed to find drill in occupied counts or unable to select drill in", boxScoreReport.summarizedOccupied(), boxScoreReport.clickOnSummarizedElement());
+        assertEquals("Unable to locate drill in",boxScoreReport.innerText, boxScoreReport.locateDrillInOccupiedCount());
         assertEquals("drill in does not match summarized number", innerText, numberOnly);
 
         System.out.println("generation successful");

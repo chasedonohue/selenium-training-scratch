@@ -115,17 +115,17 @@ public class BasePage {
             return false;
         }
     }
-    public boolean doubleClickOnElementIfInnerTextNotEqualZero(By locator) {
+    public String doubleClickOnElementIfInnerTextNotEqualZero(By locator) {
         try {
             if (!innerText.equals("0")) {
                 WebElement clickOccupiedDrillInSummarized = new WebDriverWait(driver, wt.DEFAULT_WAIT).until(ExpectedConditions.visibilityOfElementLocated(locator));
                 Actions DrillA = new Actions(driver);
                 DrillA.moveToElement(clickOccupiedDrillInSummarized).doubleClick().perform();
             }
-            return true;
+            return innerText;
         }  catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
     public String removeLettersFromString(By locator){
